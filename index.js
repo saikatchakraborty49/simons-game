@@ -2,19 +2,23 @@ var buttonColours=["red", "blue", "green", "yellow"];
 var gamePattern=[];
 var userClickedPattern=[];
 var level=0;
-
+var pressed=false;
 $(document).keypress(function(event){
+    pressed=true;
     if(level===0){
     newSequence();
 }
 });
 $(".btn").click(function(){
-    var userChosenColour=$(this).attr("id");
-    userClickedPattern.push(userChosenColour);
-    playSound(userChosenColour);
-    animations(userChosenColour);
-    // console.log(userClickedPattern);
-    checkAnswer(userClickedPattern.length-1);
+    if(pressed)
+    {
+        var userChosenColour=$(this).attr("id");
+        userClickedPattern.push(userChosenColour);
+        playSound(userChosenColour);
+        animations(userChosenColour);
+        // console.log(userClickedPattern);
+        checkAnswer(userClickedPattern.length-1);
+    }
 })
 function checkAnswer(currentIndex) {
     if(gamePattern[currentIndex]===userClickedPattern[currentIndex]){
@@ -46,7 +50,7 @@ function newSequence() {
     playSound(randomChosenButton);
 }
 function playSound(Color) {
-    var audio=new Audio(Color+".mp3");
+    var audio=new Audio("sounds/"+Color+".mp3");
     audio.play();
 }
 function animations(Color) {
@@ -58,5 +62,6 @@ function animations(Color) {
 function startOver() {
     level=0;
     gamePattern=[];
-    userClickedPattern=[]
+    userClickedPattern=[];
+    pressed=false;
 }
